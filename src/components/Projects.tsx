@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { PROJECTS } from '../data/portfolioData';
 import { Project, ProjectCategory } from '../types/portfolio';
 import { ProjectModal } from './ProjectModal';
-import { Github, ArrowRight, Sparkles, Code2 } from 'lucide-react';
+import { Github, ArrowRight, Sparkles, Code2, ExternalLink } from 'lucide-react';
 
 export const Projects: React.FC = () => {
   const [activeFilter, setActiveFilter] = useState<ProjectCategory>('All');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
-  const filterOptions: ProjectCategory[] = ['All', 'AI', 'Django', 'Web', 'API'];
+  const filterOptions: ProjectCategory[] = ['All', 'AI', 'Django', 'Web'];
 
   const filteredProjects = activeFilter === 'All'
     ? PROJECTS
@@ -16,16 +16,13 @@ export const Projects: React.FC = () => {
         const cat = p.category.toLowerCase();
         const techs = p.technologies.map((t) => t.toLowerCase());
         if (activeFilter === 'AI') {
-          return cat.includes('ai') || techs.some((t) => t.includes('langchain') || t.includes('groq'));
+          return cat.includes('ai') || techs.some((t) => t.includes('gemini') || t.includes('langchain') || t.includes('groq'));
         }
         if (activeFilter === 'Django') {
           return cat.includes('django') || techs.includes('django');
         }
         if (activeFilter === 'Web') {
-          return cat.includes('web') || techs.some((t) => ['html', 'css', 'bootstrap'].includes(t));
-        }
-        if (activeFilter === 'API') {
-          return cat.includes('api') || techs.some((t) => t.includes('api'));
+          return cat.includes('web') || techs.some((t) => ['react', 'typescript', 'html', 'css', 'bootstrap', 'google places api'].includes(t));
         }
         return true;
       });
@@ -51,7 +48,7 @@ export const Projects: React.FC = () => {
               Featured Projects
             </h2>
             <p className="text-xs sm:text-sm md:text-base text-[#94A3B8] max-w-xl">
-              Concrete implementations featuring LLMs, structured outputs, Django full-stack web platforms, and API services.
+              Concrete engineering implementations featuring LLM integration, Gemini APIs, Groq inference, Django web platforms, and REST architecture.
             </p>
           </div>
 
@@ -64,7 +61,7 @@ export const Projects: React.FC = () => {
                   key={cat}
                   type="button"
                   onClick={() => setActiveFilter(cat)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all shrink-0 ${
+                  className={`px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all shrink-0 ${
                     active
                       ? 'bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] text-white shadow-[0_0_15px_rgba(99,102,241,0.35)]'
                       : 'text-[#94A3B8] hover:text-white hover:bg-white/5'
@@ -78,108 +75,141 @@ export const Projects: React.FC = () => {
         </div>
 
         {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
-          {filteredProjects.map((project) => (
-            <div
-              key={project.id}
-              className={`glass-card rounded-2xl border flex flex-col justify-between overflow-hidden group transition-all duration-300 ${
-                project.featured
-                  ? 'border-[#6366F1]/40 bg-[#0D1117]/90 shadow-[0_10px_35px_rgba(99,102,241,0.12)]'
-                  : 'border-white/5 bg-[#0D1117]/60 hover:border-white/15'
-              }`}
+        {filteredProjects.length === 0 ? (
+          <div className="py-14 text-center rounded-2xl border border-white/5 bg-[#0D1117]/60 p-8 space-y-3 max-w-md mx-auto">
+            <p className="text-sm font-mono text-[#94A3B8]">
+              No featured projects found under "{activeFilter}".
+            </p>
+            <button
+              type="button"
+              onClick={() => setActiveFilter('All')}
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#06B6D4] hover:text-[#38BDF8] transition-colors"
             >
-              {/* Card Header & Visual Graphic */}
-              <div>
-                <div className="relative p-4 sm:p-5 pb-4 bg-gradient-to-b from-[#111827] to-[#0D1117] border-b border-white/5">
-                  <div className="flex items-center justify-between gap-2 mb-3">
-                    <span className="font-mono text-[10px] text-[#06B6D4] px-2.5 py-1 rounded bg-[#06B6D4]/10 border border-[#06B6D4]/20 uppercase tracking-wider font-semibold">
-                      {project.category}
-                    </span>
-
-                    {project.featured && (
-                      <span className="font-mono text-[10px] text-[#818CF8] px-2.5 py-1 rounded bg-[#6366F1]/15 border border-[#6366F1]/30 font-semibold flex items-center gap-1">
-                        <Sparkles className="w-3 h-3 text-[#6366F1]" />
-                        <span>{project.badge || 'Primary Featured Project'}</span>
+              <span>View All Featured Projects</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredProjects.map((project) => (
+              <div
+                key={project.id}
+                className={`glass-card rounded-2xl border flex flex-col justify-between overflow-hidden group transition-all duration-300 ${
+                  project.featured
+                    ? 'border-[#6366F1]/40 bg-[#0D1117]/90 shadow-[0_10px_35px_rgba(99,102,241,0.12)]'
+                    : 'border-white/5 bg-[#0D1117]/60 hover:border-white/15'
+                }`}
+              >
+                {/* Card Header & Visual Graphic */}
+                <div>
+                  <div className="relative p-4 sm:p-5 pb-4 bg-gradient-to-b from-[#111827] to-[#0D1117] border-b border-white/5">
+                    <div className="flex items-center justify-between gap-2 mb-3">
+                      <span className="font-mono text-[10px] text-[#06B6D4] px-2.5 py-1 rounded bg-[#06B6D4]/10 border border-[#06B6D4]/20 uppercase tracking-wider font-semibold">
+                        {project.category}
                       </span>
+
+                      {project.featured && (
+                        <span className="font-mono text-[10px] text-[#818CF8] px-2.5 py-1 rounded bg-[#6366F1]/15 border border-[#6366F1]/30 font-semibold flex items-center gap-1">
+                          <Sparkles className="w-3 h-3 text-[#6366F1]" />
+                          <span>{project.badge || 'Featured Project'}</span>
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Visual Mockup Box */}
+                    <div className="p-3 sm:p-3.5 rounded-xl bg-[#080B12] border border-white/10 font-mono text-[11px] text-[#94A3B8] space-y-1.5 shadow-inner">
+                      <div className="flex items-center justify-between text-[10px] text-[#6366F1] border-b border-white/5 pb-1">
+                        <span className="text-white font-semibold flex items-center gap-1.5 truncate">
+                          <Code2 className="w-3.5 h-3.5 text-[#06B6D4] shrink-0" />
+                          <span className="truncate">{project.title}</span>
+                        </span>
+                        <span className="text-[9px] text-[#94A3B8] shrink-0 ml-1 truncate">
+                          {project.technologies.slice(0, 2).join(' • ')}
+                        </span>
+                      </div>
+                      <div className="text-[11px] text-[#38BDF8] font-mono truncate">
+                        {project.mockupSnippet || 'Reliable backend & API architecture'}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Content body */}
+                  <div className="p-4 sm:p-5 space-y-4">
+                    <div>
+                      <h3 className="text-lg font-bold font-display text-[#F8FAFC] tracking-tight group-hover:text-[#6366F1] transition-colors">
+                        {project.title}
+                      </h3>
+                      <p className="text-xs sm:text-sm text-[#94A3B8] leading-relaxed mt-2 line-clamp-3">
+                        {project.description}
+                      </p>
+                    </div>
+
+                    {/* Highlights checklist */}
+                    <div className="space-y-1.5 text-xs text-[#94A3B8] pt-1">
+                      {project.features.map((feat, fIdx) => (
+                        <div key={fIdx} className="flex items-start gap-2">
+                          <span className="text-[#06B6D4] font-bold text-xs mt-0.5">›</span>
+                          <span className="line-clamp-1 text-[#CBD5E1]">{feat}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Technologies tags */}
+                    <div className="flex flex-wrap items-center gap-1.5 pt-2">
+                      {project.technologies.map((tech, idx) => (
+                        <span
+                          key={idx}
+                          className="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-[11px] font-mono text-[#F8FAFC]"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Action Buttons Footer: Conditional per project */}
+                <div className="p-4 sm:p-5 pt-3 border-t border-white/5 flex flex-wrap items-center justify-between gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setSelectedProject(project)}
+                    className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-[#F8FAFC] bg-white/5 hover:bg-white/10 border border-white/10 transition-colors"
+                  >
+                    <span>View Details</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-[#06B6D4]" />
+                  </button>
+
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-white/90 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-colors"
+                      title="View GitHub Repository"
+                    >
+                      <Github className="w-3.5 h-3.5" />
+                      <span>GitHub</span>
+                    </a>
+
+                    {project.liveDemo && (
+                      <a
+                        href={project.liveDemo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-[#06B6D4] to-[#3B82F6] hover:opacity-95 shadow-[0_4px_15px_rgba(6,182,212,0.25)] transition-all hover:scale-[1.02] active:scale-[0.98]"
+                        title="Open Live Demo"
+                      >
+                        <ExternalLink className="w-3.5 h-3.5" />
+                        <span>Live Demo</span>
+                      </a>
                     )}
                   </div>
-
-                  {/* Visual Mockup Box */}
-                  <div className="p-3 sm:p-3.5 rounded-xl bg-[#080B12] border border-white/10 font-mono text-[11px] text-[#94A3B8] space-y-1.5 shadow-inner">
-                    <div className="flex items-center justify-between text-[10px] text-[#6366F1] border-b border-white/5 pb-1">
-                      <span className="text-white font-semibold flex items-center gap-1.5 truncate">
-                        <Code2 className="w-3.5 h-3.5 text-[#06B6D4] shrink-0" />
-                        <span className="truncate">{project.title}</span>
-                      </span>
-                      <span className="text-[9px] text-[#94A3B8] shrink-0 ml-1">Python / Django</span>
-                    </div>
-                    <div className="text-[11px] text-[#38BDF8] font-mono truncate">
-                      {project.mockupSnippet || 'Reliable backend & API architecture'}
-                    </div>
-                  </div>
                 </div>
 
-                {/* Content body */}
-                <div className="p-4 sm:p-6 space-y-4">
-                  <div>
-                    <h3 className="text-lg sm:text-xl font-bold font-display text-[#F8FAFC] tracking-tight group-hover:text-[#6366F1] transition-colors">
-                      {project.title}
-                    </h3>
-                    <p className="text-xs sm:text-sm text-[#94A3B8] leading-relaxed mt-2">
-                      {project.description}
-                    </p>
-                  </div>
-
-                  {/* Highlights checklist */}
-                  <div className="space-y-1.5 text-xs text-[#94A3B8] pt-1">
-                    {project.features.map((feat, fIdx) => (
-                      <div key={fIdx} className="flex items-start gap-2">
-                        <span className="text-[#06B6D4] font-bold text-xs mt-0.5">›</span>
-                        <span className="line-clamp-1 text-[#CBD5E1]">{feat}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Technologies tags */}
-                  <div className="flex flex-wrap items-center gap-1.5 pt-2">
-                    {project.technologies.map((tech, idx) => (
-                      <span
-                        key={idx}
-                        className="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-xs font-mono text-[#F8FAFC]"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
               </div>
-
-              {/* Action Buttons Footer: Responsive layout for phone, tablet & desktop */}
-              <div className="p-4 sm:p-5 md:p-6 pt-3 border-t border-white/5 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5">
-                <button
-                  type="button"
-                  onClick={() => setSelectedProject(project)}
-                  className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold text-[#F8FAFC] bg-white/5 hover:bg-white/10 border border-white/10 transition-colors w-full sm:w-auto"
-                >
-                  <span>View Details</span>
-                  <ArrowRight className="w-3.5 h-3.5 text-[#06B6D4]" />
-                </button>
-
-                <a
-                  href={project.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] hover:opacity-95 shadow-[0_4px_15px_rgba(99,102,241,0.25)] transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
-                  title="View GitHub Repository"
-                >
-                  <Github className="w-3.5 h-3.5" />
-                  <span>GitHub</span>
-                </a>
-              </div>
-
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
 
         {/* Project Details Modal */}
         <ProjectModal
@@ -191,3 +221,4 @@ export const Projects: React.FC = () => {
     </section>
   );
 };
+

@@ -97,14 +97,17 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection, onOpenResume }) =
 
           {/* Right Action: Resume & Mobile/Tablet Menu Toggle */}
           <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
-            <button
-              type="button"
-              onClick={onOpenResume}
+            <a
+              href={PERSONAL_INFO.resumeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              download="Pradipsinh_Jadeja_Resume.pdf"
               className="hidden sm:inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-full text-xs font-medium text-white bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] hover:from-[#4F46E5] hover:to-[#7C3AED] shadow-[0_0_20px_rgba(99,102,241,0.3)] hover:shadow-[0_0_25px_rgba(99,102,241,0.5)] transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[#06B6D4]"
+              aria-label="Download Pradipsinh Jadeja Resume (PDF)"
             >
               <Download className="w-3.5 h-3.5" />
               <span>Resume</span>
-            </button>
+            </a>
 
             {/* Mobile & Tablet Hamburger Button */}
             <button
@@ -142,17 +145,17 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection, onOpenResume }) =
             </div>
 
             <div className="pt-3 border-t border-white/10 flex items-center justify-between sm:hidden">
-              <button
-                type="button"
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  onOpenResume();
-                }}
+              <a
+                href={PERSONAL_INFO.resumeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                download="Pradipsinh_Jadeja_Resume.pdf"
+                onClick={() => setMobileMenuOpen(false)}
                 className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-medium text-white bg-gradient-to-r from-[#6366F1] to-[#8B5CF6]"
               >
                 <Download className="w-3.5 h-3.5" />
                 <span>Download Resume (PDF)</span>
-              </button>
+              </a>
             </div>
           </div>
         )}

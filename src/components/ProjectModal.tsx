@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Project } from '../types/portfolio';
-import { X, Github, CheckCircle2, AlertTriangle, Lightbulb, Layers } from 'lucide-react';
+import { X, Github, CheckCircle2, AlertTriangle, Lightbulb, Layers, ExternalLink } from 'lucide-react';
 
 interface ProjectModalProps {
   project: Project | null;
@@ -161,20 +161,32 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
 
         {/* Footer Actions */}
         <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-white/10">
-          <div className="text-xs text-[#94A3B8] font-mono">
-            Repository: github.com/pradipsinh0906-prog
+          <div className="text-xs text-[#94A3B8] font-mono truncate max-w-xs">
+            Repository: {project.github.replace('https://', '')}
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5 flex-wrap">
             <a
               href={project.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] hover:opacity-95 shadow-[0_4px_15px_rgba(99,102,241,0.25)] transition-all"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold text-white/90 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-colors"
             >
               <Github className="w-4 h-4" />
-              <span>View on GitHub</span>
+              <span>GitHub</span>
             </a>
+
+            {project.liveDemo && (
+              <a
+                href={project.liveDemo}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-[#06B6D4] to-[#3B82F6] hover:opacity-95 shadow-[0_4px_15px_rgba(6,182,212,0.25)] transition-all hover:scale-[1.02] active:scale-[0.98]"
+              >
+                <ExternalLink className="w-4 h-4" />
+                <span>Live Demo</span>
+              </a>
+            )}
           </div>
         </div>
 

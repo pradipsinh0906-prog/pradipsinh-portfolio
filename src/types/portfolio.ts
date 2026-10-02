@@ -1,4 +1,4 @@
-export type ProjectCategory = 'All' | 'AI' | 'Django' | 'Web' | 'API';
+export type ProjectCategory = 'All' | 'AI' | 'Django' | 'Web';
 
 export interface Project {
   id: string;
