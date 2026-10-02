@@ -13,7 +13,7 @@ This is my personal portfolio showcasing my work as a Python & Django backend de
 - **About** — professional summary
 - **Skills** — backend, frontend, database, AI/LLM stack
 - **Experience** — Infinite Soft Tech, Kitchen365
-- **Projects** — AI Resume Reviewer, Blog Application, Weather Application, ReelsDownloader
+- **Projects** — AI Resume Reviewer, PitchSlap, Brewly
 - **AI Journey** — my exploration into RAG, Pydantic, AI Agents, n8n automation
 - **Contact** — get in touch
 

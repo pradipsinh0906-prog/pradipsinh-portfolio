@@ -8,7 +8,7 @@ export const Projects: React.FC = () => {
   const [activeFilter, setActiveFilter] = useState<ProjectCategory>('All');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
-  const filterOptions: ProjectCategory[] = ['All', 'AI', 'Django', 'Web'];
+  const filterOptions: ProjectCategory[] = ['All', 'AI', 'Web'];
 
   const filteredProjects = activeFilter === 'All'
     ? PROJECTS
@@ -17,9 +17,6 @@ export const Projects: React.FC = () => {
         const techs = p.technologies.map((t) => t.toLowerCase());
         if (activeFilter === 'AI') {
           return cat.includes('ai') || techs.some((t) => t.includes('gemini') || t.includes('langchain') || t.includes('groq'));
-        }
-        if (activeFilter === 'Django') {
-          return cat.includes('django') || techs.includes('django');
         }
         if (activeFilter === 'Web') {
           return cat.includes('web') || techs.some((t) => ['react', 'typescript', 'html', 'css', 'bootstrap', 'google places api'].includes(t));
